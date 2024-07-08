@@ -1,118 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 공식 예제로 공부해보자!
+
+// We create a "provider", which will store a value (here "Hello world").
+// 해당 문장은 "프로바이더"라는 것을 생성하는 것으로 이 프로바이더는 값을 저정한다(여기서는 "Hello world"라는 값)
+// By using a provider, this allows us to mock/override the value exposed.
+// 프로바이더를 사용함으로써, 노출된 값을 모의하거나 재정의할 수 있다.
+
+final helloWorldProvider = Provider((_) => 'Hello world');
+// dart에서는 매개변수에 들어온 변수를 사용하지 않을 시,  _ 사용 가능
+
+// Provider가 가지고 있는 매개변수=> '스토어'라고 함
+// ((_) => 'Hello world') 얘가 바로 스토어...!
+// 스토어에는 상태가 저장되고, 이러한 스토어를 Provider로 관리하는 패턴을 Provider패턴이라고 함!
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // For widgets to be able to read providers, we need to wrap the entire
+    // application in a "ProviderScope" widget.
+    // 위젯이 공급자를 읽을 수 있도록 하려면 전체를 포장해야 한다.
+    // This is where the state of our providers will be stored.
+    // ProviderScope" 위젯 안에 우리의 프로바이더들의 상태가 저장된다.
+
+    // ★★★ ProviderScope ======> Provider를 제공할 범위를 지정!!!!
+    // 이를 통해 Provider 객체들의 상태를 전역적으로 관리하고 생성함
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+// Extend ConsumerWidget instead of StatelessWidget, which is exposed by Riverpod
+// ★ StatelessWidget => ConsumerWidget
+// ★ StatefulWidget => ConsumerStatefulWidget
+
+// ★★★ ConsumerWidget => 상태를 구독하기 위해 ConsumerWidget을 상속한 클래스.
+//                         ConsumerWidget는 Provider 객체의 상태를 구독하고,
+//                         상태 변경이 있을 때마다 build를 호출해 화면을 다시 그림!
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+// ★★★ WidgetRef => 위젯 트리 내 Provider 객체에 대한 참조를 제공하고,
+//                     이를 통해 하위 위젯에서 Provider 객체를 생성하거나 액세스 할 수 있음.
+
+// Provider 객체에 액세스하여 상태변경을 감지하면 현재 위젯에 다시 빌드를 요청함.
+// 또한 WidgetRef는 context와 같은 역할을 해서 다른 위젯에서도 상태를 공유하는 역할을 함.
+// 이를 통해 상태 관리를 보다 효율적으로 할 수 있음!
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ★★★ ref => 다른 프로바이더 객체 얻기
+    final String value = ref.watch(
+        helloWorldProvider); // watch : Provider를 반복해서 관찰하고 상태가 변화면 build를 호출
+
+    /* 
+    Provider를 초기에 한 번만 읽고, 값이 변경되더라도 build를 요청하지 않음
+    final String value = ref.read(helloWorldProvider); 
+    */
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Example')),
+        body: Center(
+          child: Text(value),
         ),
       ),
     );
