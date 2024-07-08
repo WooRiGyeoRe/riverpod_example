@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # flutter_riverpod_example
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# riverpod_example
+>>>>>>> 2e2b2aca9cadef2384ab5c03d53df629304c53a1
