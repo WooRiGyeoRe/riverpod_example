@@ -31,11 +31,19 @@ class StateProviderScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // ★ (2) ref.read => 실행
+                // ★ (2)-1. ref.read => 실행
                 // .update((state) => )에서 (state)는 현재 상태를 의미 ---> 즉, 0
                 ref.read(numberProvider.notifier).update((state) => state + 1);
               },
               child: const Text('UP'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // ★ (2)-2. ref.read => 실행
+                ref.read(numberProvider.notifier).state =
+                    ref.read(numberProvider.notifier).state - 1;
+              },
+              child: const Text('DOWN'),
             ),
             ElevatedButton(
               onPressed: () {
