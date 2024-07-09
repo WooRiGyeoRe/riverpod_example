@@ -50,6 +50,16 @@ final myProvider = Provider((ref) {
 //                 onClick과 같은 클릭 이벤트에서 변경 내용을 무시하면서 provider의 값이 필요할 때 유용함.
 
 
+/* 
+   (+) 내용 추가 : ref.watch  VS  ref.read
+    
+    ref.watch는 반환값 업데이트가 있을 때, 지속적으로 build 함수를 다시 실행함.
+                필수적으로 UI 관련 코드에만 사용함.
+    ref.read는 실행되는 순간 단 한번만 provider 값을 가져옴.
+               onPressed 콜백처럼 특정 action 뒤 실행되는 함수 내부에서 사용됨.
+  
+
+*/ 
 
 // ============================================================== main.dart
 
