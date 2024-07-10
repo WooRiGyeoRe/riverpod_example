@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_example/layout/default_layout.dart';
-import 'package:flutter_riverpod_example/riverpod/state_provider..dart';
+import 'package:flutter_riverpod_example/riverpod/state_provider.dart';
 
 // ★ StatelessWidget에서 ConsumerWidget으로 변경 ★ => 리버팟 사용 준비 완료!
 class StateProviderScreen extends ConsumerWidget {
