@@ -71,3 +71,20 @@ int gStateMultiply(GStateMultiplyRef ref,
     required int number2}) {
   return number1 * number2;
 }
+
+@riverpod
+class GStateNotifier extends _$GStateNotifier {
+  // 초기 상태 지정하기
+  @override
+  int build() {
+    return (0);
+  }
+
+  increment() {
+    state++;
+  }
+
+  decrement() {
+    state--;
+  }
+} // 작성 후, 터미널에 flutter pub run build_runner build 해주기 
