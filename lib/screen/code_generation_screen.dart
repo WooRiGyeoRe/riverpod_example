@@ -54,7 +54,11 @@ class CodeGenerationScreen extends ConsumerWidget {
               child: CircularProgressIndicator(),
             ),
           ),
-          Text('state4 : $state4'),
+          Text(
+            'state4 : $state4',
+            textAlign: TextAlign.center,
+          ),
+          const Text('============================================='),
           Text('state5 : $state5'),
           Row(
             children: [
@@ -71,7 +75,15 @@ class CodeGenerationScreen extends ConsumerWidget {
                 child: const Text('Decrement'),
               ),
             ],
-          )
+          ),
+          // ★ invalidate() => 유효하지 않게 하다라는 뜻.
+          //                 즉, 이 state를 더 이상 유효하지 않게해서 초기 상태로 되돌리는 역할!
+          ElevatedButton(
+            onPressed: () {
+              ref.invalidate(gStateNotifierProvider);
+            },
+            child: const Text('Invalidate'),
+          ),
         ],
       ),
     );

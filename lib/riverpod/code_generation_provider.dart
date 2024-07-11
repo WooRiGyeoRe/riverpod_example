@@ -5,6 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'code_generation_provider.g.dart';
 
+// codeGeneration 사용은 프로젝트 성향에 맞게 골라 사용하면 됨 (무조건 써야된다가 아님!)
+
 // ★ codeGeneration
 // 1) 어떤 Provider를 사용할지 결정할 고민할 필요가 없도록
 //    Provider, FutureProvider, StreamProvider => codeGeneration을 이용하면 riverpod에서 자동으로 결정해 줌.
