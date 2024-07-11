@@ -10,6 +10,7 @@ class CodeGenerationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print('build');
     // watch할 provider가 헷갈릴 수 있음...
     // gstate가 아님 => 이건 Code Generation을 하기 위한 함수의 정의를 작성한 것
     // 진짜 watch할 provider는 .g.dart 파일 안에 있음!
@@ -17,7 +18,7 @@ class CodeGenerationScreen extends ConsumerWidget {
     final state2 = ref.watch(gStateFutureProvider);
     final state3 = ref.watch(gStateFuture2Provider);
     final state4 = ref.watch(gStateMultiplyProvider(number1: 10, number2: 20));
-    final state5 = ref.watch(gStateNotifierProvider);
+    // final state5 = ref.watch(gStateNotifierProvider);
 
     return DefaultLayout(
       title: 'CodeGenerationScreen',
@@ -59,7 +60,22 @@ class CodeGenerationScreen extends ConsumerWidget {
             textAlign: TextAlign.center,
           ),
           const Text('============================================='),
-          Text('state5 : $state5'),
+          // Text('state5 : $state5'),
+          // const _StateFiveWidget(),
+          // ★ Consumer => 마치 새로 만든 위젯마냥 작성해주기
+          Consumer(
+            builder: (context, ref, child) {
+              print('builder build');
+              final state5 = ref.watch(gStateNotifierProvider);
+              return Row(
+                children: [
+                  Text('state5 : $state5'),
+                  if (child != null) child,
+                ],
+              );
+            },
+            child: const Text('hello'),
+          ),
           Row(
             children: [
               ElevatedButton(
@@ -87,5 +103,15 @@ class CodeGenerationScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+class _StateFiveWidget extends ConsumerWidget {
+  const _StateFiveWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state5 = ref.watch(gStateNotifierProvider);
+    return Text('state5 : $state5');
   }
 }
